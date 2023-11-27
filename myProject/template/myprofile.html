@@ -1,0 +1,86 @@
+{% extends "home.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+ 
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body{
+ background-color: rgb(23, 5, 43);
+ height: 800px;
+  }
+.card {
+  box-shadow: 6px 8px 15px 6px rgb(18, 77, 18);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+ background-color: #577a58;
+ border-radius: 20px;
+  
+}
+
+.title {
+  color: rgb(44, 22, 22);
+  font-size: 22px;
+  font-style: italic;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: rgb(45, 153, 99);
+  background-color: #630909;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 20px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: rgb(63, 1, 1);
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+img{
+width: 300px;
+border-radius: 20px;
+}
+h2{
+  color: rgb(199, 204, 104);
+}
+h1{
+  font-style:italic;
+}
+</style>
+</head>
+{%load static %}
+<body>
+
+<h2 style="text-align:center">My Profile Card</h2>
+
+<div class="card">
+  <img src="/template/owl-bird-eyes-eagle-owl-86596.jpeg" alt="myprofile"  >
+  <h1>Nahar Khan Mary</h1>
+  <p class="title">Backend Developer</p>
+  <p>NIET</p>
+  <div style="margin: 24px 0;">
+    <a href="#"><i class="fa fa-dribbble"></i></a> 
+    <a href="#"><i class="fa fa-twitter"></i></a>  
+    <a href="#"><i class="fa fa-linkedin"></i></a>  
+    <a href="#"><i class="fa fa-facebook"></i></a> 
+  </div>
+  <p><button>Contact</button></p>
+</div>
+
+</body>
+</html>
+{% endblock %}
