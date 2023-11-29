@@ -1,4 +1,7 @@
 from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
 from myApp.models import *
 
 
@@ -6,10 +9,54 @@ def homePage(request):
    return render(request,"home.html")
 
 def loginPage(request):
-   return render(request,"login.html")
+     myMessage={
+        'Password_Error':'User Not Found',
+        'Password_Success':'Login Successfully',
+    }
+    
+     if request.method=="POST":
+
+       user_name=request.POST.get("username")
+       myPassword=request.POST.get("pass")
+       
+       print(user_name,myPassword)
+       
+       user=authenticate(request,username=user_name,password=myPassword)
+       if user is not None:
+           login(request,user)
+           return redirect("homePageUrl")
+       else:
+           messages.warning(request,myMessage["Password_Error"])
+           
+       print(user)
+    
+     return render(request,"login.html")
 
 def signupPage(request):
-   return render(request,"signup.html")
+    
+    myMessage={
+        'Password_Error':'Password and Confirm Password Not Match',
+        'Password_Success':'User Create Successfully',
+    }
+    if request.method=="POST":
+
+       user_name=request.POST.get("username")
+       myemail=request.POST.get("email")
+       pass1=request.POST.get("password1")
+       pass2=request.POST.get("password2")
+       
+       if pass1!=pass2:
+           messages.error(request,myMessage['Password_Error'])
+       else:
+           myuser=User.objects.create_user(user_name,myemail,pass2)
+           
+           myuser.save()
+           
+           messages.success(request,myMessage['Password_Success'])
+           
+           return redirect("loginPageUrl")
+       
+    return render(request,"signup.html")
 
 def myprofile(request):
    return render(request,"myprofile.html")
@@ -74,6 +121,11 @@ def libraryPage(request):
 
 #Student Page
 def studentAdd(request):
+    
+    my_Message= {
+        'Error_Message':'Student Add Failed',
+        'Success_Message':'Student Add Successfully',
+    }
 
     if request.method=="POST":
 
@@ -93,14 +145,29 @@ def studentAdd(request):
         myImage=Profile_pic
 
        )
+       
+       if Profile_pic:
+           student.myImage=Profile_pic
+       else:
+           student.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg' 
+              
        student.save()
-
-       return redirect("studentPageUrl")
+       
+       messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
+        
+        return redirect("studentPageUrl")
 
     return render(request, "student.html")
 
 #Teacher Page
 def teacherAdd(request):
+    
+    my_Message= {
+        'Error_Message':'Teacher Add Failed',
+        'Success_Message':'Teacher Add Successfully',
+    }
 
     if request.method=="POST":
 
@@ -118,7 +185,16 @@ def teacherAdd(request):
             Age=s_age,
             myImage=Profile_pic
             )
+        
+        if Profile_pic:
+         teacher.myImage=Profile_pic
+        else:
+           teacher.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg' 
+            
         teacher.save()
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
 
         return redirect("teacherPageUrl")
 
@@ -126,6 +202,11 @@ def teacherAdd(request):
 
 #Employee Page
 def employeeAdd(request):
+    
+    my_Message= {
+        'Error_Message':'Employee Add Failed',
+        'Success_Message':'Employee Add Successfully',
+    }
 
     if request.method=="POST":
 
@@ -143,8 +224,16 @@ def employeeAdd(request):
             Age=s_age,
             myImage=Profile_pic
             )
+        if Profile_pic:
+           employee.myImage=Profile_pic
+        else:
+           employee.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg'  
         employee.save()
-
+        
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
+            
         return redirect("employeePageUrl")
 
     return render(request, "employee.html")
@@ -152,6 +241,10 @@ def employeeAdd(request):
 
 #Authority Page
 def authorityAdd(request):
+    my_Message= {
+        'Error_Message':'Authority Add Failed',
+        'Success_Message':'Authority Add Successfully',
+    }
 
     if request.method=="POST":
 
@@ -169,14 +262,27 @@ def authorityAdd(request):
             Age=s_age,
             myImage=Profile_pic
             )
+        
+        if Profile_pic:
+           authority.myImage=Profile_pic
+        else:
+          authority.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg'  
+        
         authority.save()
-
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
         return redirect("authorityPageUrl")
 
     return render(request, "authority.html")
 
 #Library Page
 def libraryAdd(request):
+    
+    my_Message= {
+        'Error_Message':'Library Add Failed',
+        'Success_Message':'Library Add Successfully',
+    }
 
     if request.method=="POST":
 
@@ -194,8 +300,17 @@ def libraryAdd(request):
             Return_Date=r_date,
             myImage=Profile_pic
             )
+        
+        if Profile_pic:
+           library.myImage=Profile_pic
+        else:
+           library.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg'  
+        
         library.save()
-
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
+        
         return redirect("libraryPageUrl")
 
     return render(request, "library.html")
@@ -216,6 +331,11 @@ def deleteStudent(request,myid):
     
     return redirect("studentPageUrl")
 def updateStudent(request):
+    
+    my_Message= {
+        'Error_Message':'Student Add Failed',
+        'Success_Message':'Student Add Successfully',
+    }
 
     if request.method=="POST":
        studentid=request.POST.get("studentid")
@@ -234,9 +354,20 @@ def updateStudent(request):
         Age=s_age,
         myImage=Profile_pic
        )
+         
+       if Profile_pic:
+           student.myImage=Profile_pic
+       else:
+           student.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg' 
+              
        student.save()
+       
+       messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
+        student.save()
 
-       return redirect("studentPageUrl")
+    return redirect("studentPageUrl")
 
   
 
@@ -257,6 +388,10 @@ def deleteTeacher(request,myid):
     return redirect("teacherPageUrl")
 
 def updateTeacher(request):
+    my_Message= {
+        'Error_Message':'Teacher Add Failed',
+        'Success_Message':'Teacher Add Successfully',
+    }
 
     if request.method=="POST":
         teacherid=request.POST.get("teach")
@@ -275,12 +410,24 @@ def updateTeacher(request):
             Age=s_age,
             myImage=Profile_pic
             )
+        if Profile_pic:
+         teacher.myImage=Profile_pic
+        else:
+           teacher.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg' 
+            
+        teacher.save()
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
         teacher.save()
 
         return redirect("teacherPageUrl")
     
     
 def editEmployee(request,myid):
+    
+   
+      
     employee=Employees_Model.objects.filter(id=myid)
     
     
@@ -299,6 +446,11 @@ def deleteEmployee(request,myid):
     return redirect("employeePageUrl")
 
 def updateEmployee(request):
+    
+    my_Message= {
+        'Error_Message':'Employee Add Failed',
+        'Success_Message':'Employee Add Successfully',
+    }
 
     if request.method=="POST":
         employeeid=employee.POST.get("emm")
@@ -317,10 +469,18 @@ def updateEmployee(request):
             Age=s_age,
             myImage=Profile_pic
             )
+        
+        if Profile_pic:
+           employee.myImage=Profile_pic
+        else:
+           employee.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg'  
         employee.save()
-
+        
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
+            
         return redirect("employeePageUrl")
-    
     
 
 def editAuthority(request,myid):
@@ -342,6 +502,10 @@ def deleteAuthority(request,myid):
     return redirect("authorityPageUrl")
 
 def updateAuthority(request):
+    my_Message= {
+        'Error_Message':'Authority Add Failed',
+        'Success_Message':'Authority Add Successfully',
+    }
 
     if request.method=="POST":
         Authorityid=Authority.POST.get("aut")
@@ -360,6 +524,15 @@ def updateAuthority(request):
             Age=s_age,
             myImage=Profile_pic
             )
+        if Profile_pic:
+           Authority.myImage=Profile_pic
+        else:
+          Authority.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg'  
+        
+        Authority.save()
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
         Authority.save()
 
         return redirect("authorityPageUrl")
@@ -384,6 +557,13 @@ def deletelibrary(request,myid):
     return redirect("libraryPageUrl")
 
 def updatelibrary(request):
+    
+     
+    my_Message= {
+        'Error_Message':'Library Add Failed',
+        'Success_Message':'Library Add Successfully',
+    }
+
 
     if request.method=="POST":
 
@@ -401,8 +581,17 @@ def updatelibrary(request):
             Return_Date=r_date,
             myImage=Profile_pic
             )
+        if Profile_pic:
+           library.myImage=Profile_pic
+        else:
+           library.myImage=Profile_pic='C:/Users/lab 504-1/Desktop/Project/myProject/template/default.jpg'  
+        
         library.save()
-
+        messages.success(request,my_Message["Success_Message"])
+    else:
+        messages.success(request,my_Message["Error_Message"])
+        
+       
         return redirect("libraryPageUrl")
 
     

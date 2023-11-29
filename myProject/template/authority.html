@@ -13,7 +13,22 @@
           background-color: #ECE3CE;
           height: 100%;
       }
-
+      .success {
+        background-color: #a9f8ad;
+        font-size: large;
+        font-style: italic;
+        color: #075c0c;
+        width: 100%;
+  
+  
+    }
+    .error{
+      background-color: #f18582;
+      font-size: large;
+      font-style: italic;
+      color: #b11c16;
+      width: 100%;
+  }
       header {
           background-color: #ECE3CE;
           color: #1a1616;
@@ -155,6 +170,7 @@
 <body>
 
   <h2>Authority Information</h2>
+  {% include "nevber.html"%}  
 
   <table>
     <tr>
@@ -182,6 +198,26 @@
     </tr>
     {% endfor %}
   </table>
+  {% if messages %}
+
+
+{% for message in messages %}
+
+
+{% if message.tags == 'success' %}
+<div class="success">
+{{message}}
+</div>  
+{% endif %}
+
+{% if message.tags == 'error' %}
+<div class="error">
+{{message}}
+</div>  
+ 
+{% endif %}
+{% endfor %} 
+{% endif %}
 
   <div class="container">
     <form action="{%url 'authorityAdd'%}" method='post'enctype="multipart/form-data">

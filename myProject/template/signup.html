@@ -135,13 +135,15 @@ button{
     </style>
 </head>
 <body>
+    
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form action="" method="post">
+    <form action="{% url 'signupPageUrl' %} "method="post">
         {% csrf_token %} 
         <h3>Signup Here</h3>
+        {% include "message.html" %}
 
         <label for="username">Username</label>
         <input type="text" placeholder="Username" name="username" id="username">

@@ -13,7 +13,23 @@
           background-color: #ECE3CE;
           height: 100%;
       }
-
+      .success {
+        background-color: #a9f8ad;
+        font-size: large;
+        font-style: italic;
+        color: #075c0c;
+        width: 100%;
+        height: 30px;
+  
+    }
+    .error{
+      background-color: #f18582;
+      font-size: large;
+      font-style: italic;
+      color: #b11c16;
+      width: 100%;
+      height: 30px;
+  }
       header {
           background-color: #ECE3CE;
           color: #1a1616;
@@ -158,6 +174,8 @@
 
   <h2>Teachers Information</h2>
 
+  {% include "nevber.html"%}  
+  
   <table>
     <tr>
       <th>First Name</th>
@@ -185,6 +203,7 @@
     </tr>
     {% endfor %}
   </table>
+  {% include "message.html" %}
 
   <div class="container">
     <form action="{%url 'teacherAdd'%}" method='post'enctype="multipart/form-data">
